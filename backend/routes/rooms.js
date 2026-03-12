@@ -54,12 +54,16 @@ router.post('/join', protect, async (req, res) => {
             return res.status(404).json({ message: 'Room not found' });
         }
 
-        // Check if user is already a participant
-        if (room.participants.includes(req.user._id)) {
+        // Check if user is already a participant or teacher
+        if (room.participants.includes(req.user._id) || room.teachers.includes(req.user._id)) {
             return res.status(200).json(room); // Already joined, just return room
         }
 
-        room.participants.push(req.user._id);
+        if (req.user.role === 'teacher') {
+            room.teachers.push(req.user._id);
+        } else {
+            room.participants.push(req.user._id);
+        }
         await room.save();
 
         res.status(200).json(room);
@@ -73,7 +77,12 @@ router.post('/join', protect, async (req, res) => {
 // @access  Private
 router.get('/my-rooms', protect, async (req, res) => {
     try {
-        const rooms = await Room.find({ participants: req.user._id });
+        const rooms = await Room.find({
+            $or: [
+                { participants: req.user._id },
+                { teachers: req.user._id }
+            ]
+        });
         res.status(200).json(rooms);
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -94,7 +103,8 @@ router.get('/:roomId', protect, async (req, res) => {
 
         // Ensure user is authorized to view this room
         const isParticipant = room.participants.some(p => p._id.toString() === req.user._id.toString());
-        if (!isParticipant) {
+        const isTeacher = room.teachers && room.teachers.some(t => t.toString() === req.user._id.toString());
+        if (!isParticipant && !isTeacher) {
             return res.status(403).json({ message: 'Not authorized to view this room' });
         }
 

@@ -23,7 +23,7 @@ const generateToken = (res, userId) => {
 // @route   POST /api/auth/signup
 // @access  Public
 router.post('/signup', async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     // Check if user exists
     const userExists = await User.findOne({ email });
@@ -41,6 +41,7 @@ router.post('/signup', async (req, res) => {
         name,
         email,
         password: hashedPassword,
+        role: role || 'student',
     });
 
     if (user) {
@@ -49,6 +50,7 @@ router.post('/signup', async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            role: user.role,
         });
     } else {
         res.status(400).json({ message: 'Invalid user data' });
@@ -70,6 +72,7 @@ router.post('/login', async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            role: user.role,
         });
     } else {
         res.status(401).json({ message: 'Invalid email or password' });

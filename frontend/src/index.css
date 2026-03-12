@@ -1,1 +1,122 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+    --color-bg-primary: #0A0E17;
+    --color-bg-surface: #111827;
+    --color-bg-elevated: #1a2235;
+    --color-border: #1e2d45;
+    --color-border-bright: #2a3f5f;
+    --color-accent-mint: #4FFFC4;
+    --color-accent-violet: #7B61FF;
+    --color-accent-coral: #FF6B6B;
+    --color-accent-amber: #FFB347;
+    --color-text-primary: #F0F4FF;
+    --color-text-secondary: #8895AA;
+    --color-text-muted: #4A5568;
+
+    --font-syne: "Syne", sans-serif;
+    --font-dm-sans: "DM Sans", sans-serif;
+    --font-jetbrains: "JetBrains Mono", monospace;
+}
+
+@layer base {
+    :root {
+        --bg-primary: #0A0E17;
+        --bg-surface: #111827;
+        --bg-elevated: #1a2235;
+        --border: #1e2d45;
+        --border-bright: #2a3f5f;
+        --accent-mint: #4FFFC4;
+        --accent-violet: #7B61FF;
+        --accent-coral: #FF6B6B;
+        --accent-amber: #FFB347;
+        --text-primary: #F0F4FF;
+        --text-secondary: #8895AA;
+        --text-muted: #4A5568;
+    }
+
+    body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: var(--font-dm-sans);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: var(--font-syne);
+    }
+}
+
+@layer utilities {
+    .bg-pattern {
+        background-image: linear-gradient(rgba(79, 255, 196, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(79, 255, 196, 0.03) 1px, transparent 1px);
+        background-size: 40px 40px;
+    }
+
+    .bg-radial {
+        background: radial-gradient(ellipse at 20% 50%, #0d1b2e 0%, var(--bg-primary) 70%);
+    }
+
+    .text-shadow-glow {
+        text-shadow: 0 0 10px rgba(79, 255, 196, 0.5);
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeUp {
+    animation: fadeUp 0.4s ease forwards;
+}
+
+@keyframes pulse-dot {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(0.85);
+    }
+}
+
+.animate-pulse-dot {
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* Custom scrollbar for better dark mode feel */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--border-bright);
+}
