@@ -35,8 +35,6 @@ Odyssey AI is a full-stack, AI-powered collaborative research platform built for
 
 ## Team Members
 
-| Name |
-|---|---|
 | Lavanya Singla |
 | Aaditya Mehar |
 
